@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>24小时电子时钟</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: #000000;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            font-family: 'Courier New', monospace;
+            overflow: hidden;
+        }
+
+        .clock-container {
+            text-align: center;
+            user-select: none;
+        }
+
+        .clock {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .time-segment {
+            font-size: 15vw;
+            font-weight: bold;
+            color: #00ff41;
+            text-shadow: 
+                0 0 10px #00ff41,
+                0 0 20px #00ff41,
+                0 0 30px #00ff41,
+                0 0 40px #00ff41,
+                0 0 70px #00ff41,
+                0 0 80px #00ff41,
+                0 0 100px #00ff41;
+            animation: glow 2s ease-in-out infinite alternate;
+            line-height: 1;
+        }
+
+        .separator {
+            font-size: 15vw;
+            font-weight: bold;
+            color: #00ff41;
+            text-shadow: 
+                0 0 10px #00ff41,
+                0 0 20px #00ff41,
+                0 0 30px #00ff41;
+            animation: blink 1s step-start infinite;
+            line-height: 1;
+        }
+
+        .date-display {
+            margin-top: 40px;
+            font-size: 3vw;
+            color: #00ff41;
+            text-shadow: 
+                0 0 5px #00ff41,
+                0 0 10px #00ff41,
+                0 0 15px #00ff41;
+            letter-spacing: 2px;
+        }
+
+        @keyframes glow {
+            from {
+                text-shadow: 
+                    0 0 10px #00ff41,
+                    0 0 20px #00ff41,
+                    0 0 30px #00ff41,
+                    0 0 40px #00ff41,
+                    0 0 70px #00ff41,
+                    0 0 80px #00ff41,
+                    0 0 100px #00ff41;
+            }
+            to {
+                text-shadow: 
+                    0 0 5px #00ff41,
+                    0 0 10px #00ff41,
+                    0 0 15px #00ff41,
+                    0 0 20px #00ff41,
+                    0 0 35px #00ff41,
+                    0 0 40px #00ff41,
+                    0 0 50px #00ff41;
+            }
+        }
+
+        @keyframes blink {
+            50% {
+                opacity: 0;
+            }
+        }
+
+        /* 响应式设计 - 小屏幕 */
+        @media (max-width: 768px) {
+            .time-segment,
+            .separator {
+                font-size: 18vw;
+            }
+            
+            .date-display {
+                font-size: 4vw;
+            }
+        }
+
+        /* 响应式设计 - 大屏幕 */
+        @media (min-width: 1920px) {
+            .time-segment,
+            .separator {
+                font-size: 200px;
+            }
+            
+            .date-display {
+                font-size: 40px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="clock-container">
+        <div class="clock">
+            <span class="time-segment hours">00</span>
+            <span class="separator">:</span>
+            <span class="time-segment minutes">00</span>
+            <span class="separator">:</span>
+            <span class="time-segment seconds">00</span>
+        </div>
+        <div class="date-display"></div>
+    </div>
+
+    <script>
+        function padZero(num) {
+            return num.toString().padStart(2, '0');
+        }
+
+        function updateClock() {
+            const now = new Date();
+            
+            // 更新时间
+            const hours = padZero(now.getHours());
+            const minutes = padZero(now.getMinutes());
+            const seconds = padZero(now.getSeconds());
+            
+            document.querySelector('.hours').textContent = hours;
+            document.querySelector('.minutes').textContent = minutes;
+            document.querySelector('.seconds').textContent = seconds;
+            
+            // 更新日期
+            const year = now.getFullYear();
+            const month = padZero(now.getMonth() + 1);
+            const date = padZero(now.getDate());
+            const weekdays = ['星期日', '星期一', '星期二', '星期三', '星期四', '星期五', '星期六'];
+            const weekday = weekdays[now.getDay()];
+            
+            document.querySelector('.date-display').textContent = 
+                `${year}年${month}月${date}日 ${weekday}`;
+        }
+
+        // 立即执行一次
+        updateClock();
+        
+        // 每秒更新
+        setInterval(updateClock, 1000);
+    </script>
+</body>
+</html>
