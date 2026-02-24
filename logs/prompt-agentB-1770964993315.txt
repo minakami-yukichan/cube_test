@@ -1,0 +1,256 @@
+# 【Agent B - 代码质量检查】
+
+**需求编号：** `2-3`
+
+---
+
+## 📨 Agent A 的输出
+
+根据我的分析，**需求 2-3（24小时电子时钟）已经完成**。以下是项目现状：
+
+## ✅ 已完成的文件
+
+### 1. 设计文档
+**文件路径：** `docs/2-3/design.md`
+
+设计文档包含完整的：
+- 功能描述（24小时制电子时钟，黑色背景）
+- 技术选型（HTML5 + CSS3 + 原生JavaScript）
+- 文件结构说明
+- 接口设计（updateClock函数、padZero辅助函数）
+- 实现思路和视觉设计
+
+### 2. 源代码文件
+**文件路径：** `src/clock.html`
+
+代码特性：
+- ✅ **黑色背景** (`background-color: #000000`)
+- ✅ **24小时制** 使用 `getHours()` 直接获取 0-23
+- ✅ **电子时钟样式** 绿色发光效果 (`#00ff41`)
+- ✅ **实时更新** 每秒刷新一次
+- ✅ **响应式设计** 适配移动端和大屏幕
+- ✅ **额外功能** 显示完整日期和星期
+
+### 核心功能实现
+
+```1:48:src/clock.html
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>24小时电子时钟</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: #000000;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            font-family: 'Courier New', monospace;
+            overflow: hidden;
+        }
+
+        .clock-container {
+            text-align: center;
+            user-select: none;
+        }
+
+        .clock {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .time-segment {
+            font-size: 15vw;
+            font-weight: bold;
+            color: #00ff41;
+            text-shadow: 
+                0 0 10px #00ff41,
+                0 0 20px #00ff41,
+                0 0 30px #00ff41,
+                0 0 40px #00ff41,
+                0 0 70px #00ff41,
+                0 0 80px #00ff41,
+                0 0 100px #00ff41;
+            animation: glow 2s ease-in-out infinite alternate;
+```
+
+```142:174:src/clock.html
+    <script>
+        function padZero(num) {
+            return num.toString().padStart(2, '0');
+        }
+
+        function updateClock() {
+            const now = new Date();
+            
+            // 更新时间
+            const hours = padZero(now.getHours());
+            const minutes = padZero(now.getMinutes());
+            const seconds = padZero(now.getSeconds());
+            
+            document.querySelector('.hours').textContent = hours;
+            document.querySelector('.minutes').textContent = minutes;
+            document.querySelector('.seconds').textContent = seconds;
+            
+            // 更新日期
+            const year = now.getFullYear();
+            const month = padZero(now.getMonth() + 1);
+            const date = padZero(now.getDate());
+            const weekdays = ['星期日', '星期一', '星期二', '星期三', '星期四', '星期五', '星期六'];
+            const weekday = weekdays[now.getDay()];
+            
+            document.querySelector('.date-display').textContent = 
+                `${year}年${month}月${date}日 ${weekday}`;
+        }
+
+        // 立即执行一次
+        updateClock();
+        
+        // 每秒更新
+        setInterval(updateClock, 1000);
+    </script>
+```
+
+## 📋 代码质量检查
+
+该代码已符合以下标准：
+- ✅ 语法正确，逻辑完整
+- ✅ 无未使用的变量或导入
+- ✅ 代码格式规范（统一缩进、合理空格）
+- ✅ 遵循最佳实践（立即执行 + 定时器）
+- ✅ 用户体验优化（响应式、动画效果、闪烁分隔符）
+
+**该需求已完成，可以交由 Agent B 进行代码质量检查。**
+
+
+---
+
+## 📋 你的任务
+
+请根据 Agent A 的输出，执行 ESLint 代码质量检查，确保代码符合规范。
+
+---
+
+## ⚠️ 你的职责（Agent B）
+
+你是代码质量检查工程师，负责：
+
+1. **【必须】** 真实执行 ESLint 检查命令（不能模拟！）
+2. **【必须】** 完整输出所有 lint 错误信息（不能省略！）
+3. **【必须】** 记录每一个 lint 错误的详细信息
+4. **【必须】** 生成标准化的检查报告给 Agent A
+
+> 如果 lint 检查失败，Agent A 将根据你的报告进行修复！  
+> 你的报告质量直接影响 Agent A 的修复效果！
+
+---
+
+## 📋 执行步骤
+
+### 步骤 1：验证 Agent A 的文件完整性
+
+- 检查 `docs/${reqId}/design.md` 是否存在（使用 `read_file` 读取内容）
+- 验证源代码文件是否存在（根据 Agent A 的输出或自行查找）
+- 如果关键文件缺失，记录到报告中
+
+### 步骤 2：执行 ESLint 检查并收集报错
+
+- 读取 `package.json` 查找 lint 命令
+- 运行：`npm run lint` 或 `npx eslint .`
+- ⏱️ **注意：** lint 命令可能需要 2-5 分钟，请耐心等待完成
+- ⏱️ 必须等待命令完全执行完毕，不要中途停止
+- **【关键】** 完整记录每一条 lint 错误：
+  - 文件路径
+  - 行号和列号
+  - 错误类型（error/warning）
+  - 规则名称（eslint rule）
+  - 错误描述
+- 如果没有 lint 错误，明确标记 `"passed": true`
+
+### 步骤 3：生成检查报告文件
+
+- **写入文件：** `docs/${reqId}/lint-results.json`
+- 包含所有 lint 检查结果和错误详情
+
+---
+
+## ✅ 完成要求（重要！）
+
+完成检查后，**必须**输出以下标准 JSON 格式（不要包含其他解释文字）：
+
+### 如果 ESLint 检查通过：
+```json
+{
+  "code": 200,
+  "msg": "代码质量检查通过",
+  "data": {
+    "reqId": "2-3",
+    "status": "passed",
+    "checks": {
+      "lint": {"passed": true, "errors": [], "warnings": []}
+    },
+    "summary": "ESLint 检查通过，代码质量良好"
+  }
+}
+```
+
+### 如果 ESLint 检查失败：
+```json
+{
+  "code": 500,
+  "msg": "代码质量检查失败",
+  "data": {
+    "reqId": "2-3",
+    "status": "failed",
+    "checks": {
+      "lint": {
+        "passed": false, 
+        "errors": [
+          "文件路径:行号:列号 - 错误描述 (规则名称)"
+        ],
+        "warnings": [
+          "文件路径:行号:列号 - 警告描述 (规则名称)"
+        ]
+      }
+    },
+    "failureDetails": "详细的 lint 错误信息和具体的修复建议，供 Agent A 理解如何修复"
+  }
+}
+```
+
+⚠️ 格式要求（严格遵守）：
+1. **code 字段**：通过时必须是数字 200，失败时必须是数字 500
+2. **status 字段**：必须是字符串 "passed" 或 "failed"
+3. **reqId 字段**：必须包含需求编号 2-3
+4. **checks 字段**：只包含 lint 检查项
+5. **不要添加任何额外的解释文字**，只输出纯 JSON 格式
+6. **🔥 字符串值中必须转义换行符**：如果 failureDetails 或 errors 包含多行文本，必须使用 \n 转义，不要用真实换行！例如："failureDetails": "第一行\n第二行\n第三行"
+7. **推荐使用紧凑格式**：输出单行 JSON 可避免格式问题
+
+🚨 **status 判断规则（绝对不能违反）**：
+- ✅ **status = "passed"** 的条件：
+  - **lint.passed === true** （必须！）
+  - **lint.errors 数组为空或不存在** （必须！）
+  - 只要 ESLint 没有 error 级别的问题，就算通过
+
+- ❌ **status = "failed"** 的条件：
+  - **lint.passed === false**，或
+  - **lint.errors 数组有内容**
+  - 任何一个不满足就是 "failed"
+
+⚠️ **注意事项**：
+- warnings（警告）不影响通过状态，只有 errors（错误）才会导致失败
+- 如果只有 warnings 没有 errors，status 应该是 "passed"
+- 必须详细记录每个 error 的文件路径、行号、列号和错误描述
+
+**立即开始执行 ESLint 检查！**
